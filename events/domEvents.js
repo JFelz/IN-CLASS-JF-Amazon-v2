@@ -1,5 +1,7 @@
+import { deleteSingleAuthor, getAuthors } from '../api/authorData';
 import { deleteBook, getBooks } from '../api/bookData';
 import addBookForm from '../components/forms/addBookForm';
+import { showAuthors } from '../pages/authors';
 import { showBooks } from '../pages/books';
 
 const domEvents = () => {
@@ -36,7 +38,8 @@ const domEvents = () => {
       // eslint-disable-next-line no-alert
       if (window.confirm('Want to delete?')) {
         console.warn('DELETE AUTHOR', e.target.id);
-        console.warn(e.target.id.split('--'));
+        const [, firebaseKey] = (e.target.id.split('--'));
+        deleteSingleAuthor(firebaseKey).then(() => { getAuthors().then(showAuthors); });
       }
     }
 
