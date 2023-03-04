@@ -1,9 +1,27 @@
+import { createBook, getBooks, updateBook } from "../api/bookData";
+import { showBooks } from "../pages/books";
+
 const formEvents = () => {
   document.querySelector('#main-container').addEventListener('submit', (e) => {
     e.preventDefault();
     // TODO: CLICK EVENT FOR SUBMITTING FORM FOR ADDING A BOOK
     if (e.target.id.includes('submit-book')) {
       console.warn('CLICKED SUBMIT BOOK', e.target.id);
+      const submitPayload = {
+        title: document.querySelector('#title').value,
+        description: document.querySelector('#description').value,
+        image: document.querySelector('#image').value,
+        price: document.querySelector('#price').value,
+        author: document.querySelector('#price').value,
+        sale: document.querySelector('#sale').checked,
+      };
+      createBook(submitPayload).then(({ name }) => {
+        const patchPayload = { firebaseKey: name };
+
+        updateBook(patchPayload).then(() => {
+          getBooks.then(showBooks);
+        });
+      });
     }
 
     // TODO: CLICK EVENT FOR EDITING A BOOK
